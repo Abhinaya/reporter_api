@@ -7,11 +7,11 @@ var express = require('express');
 var routes = require('./routes');
 var orm = require('orm');
 exports.db  = orm.connect("mysql://root@127.0.0.1/newgen_dev");
-var user = require('./routes/user');
+var app = express();
+var user = require('./routes/user')(app);
 var http = require('http');
 var path = require('path');
 
-var app = express();
 
 
 // all environments
@@ -34,7 +34,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get("/person/:full_name", user.getPerson);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
